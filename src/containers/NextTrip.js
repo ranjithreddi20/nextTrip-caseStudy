@@ -8,13 +8,29 @@ import {
   getStops,
   getDepartures,
 } from "../actions/nextTrip";
+import { useHistory } from "react-router-dom";
 
-const NextTrip = ({ routes, directions, stops, departures }) => {
-  const [route, setRoute] = useState("");
-  const [direction, setDirection] = useState("");
-  const [stop, setStop] = useState("");
+const NextTrip = ({ routes, directions, stops, departures, location }) => {
+  
+  const history = useHistory();
+
+  const params = history.location.pathname.split("/nexttrip/")[1];
+  const [route, setRoute] = useState(params?.split("/")[0]);
+  const [direction, setDirection] = useState(params?.split("/")[1]);
+  const [stop, setStop] = useState(params?.split("/")[2]);
 
   const dispatch = useDispatch();
+  useEffect(() => {
+    if (params) {
+      loadDirections(params.split("/")[0]);
+      loadStops(params.split("/")[0], params.split("/")[1]);
+      loadDepartures(
+        params.split("/")[0],
+        params.split("/")[1],
+        params.split("/")[2]
+      );
+    }
+  }, [params]);
 
   const loadRoutes = () => {
     dispatch(getAllRoutes());
@@ -43,6 +59,7 @@ const NextTrip = ({ routes, directions, stops, departures }) => {
   const updateStops = (val) => {
     setStop(val);
     loadDepartures(route, direction, val);
+    history.push("/nexttrip/" + route + "/" + direction + "/" + val);
   };
 
   useEffect(() => {
@@ -78,12 +95,12 @@ const NextTrip = ({ routes, directions, stops, departures }) => {
   );
 };
 const mapStateToProps = (state) => {
-  return({
-  routes: state.allRoutes.routes,
-  directions: state.directions.directions,
-  stops: state.stops.stops,
-  departures: state.departures.departures
-})
+  return {
+    routes: state.allRoutes.routes,
+    directions: state.directions.directions,
+    stops: state.stops.stops,
+    departures: state.departures.departures,
+  };
 };
 
 export default connect(mapStateToProps)(NextTrip);

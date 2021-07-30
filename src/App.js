@@ -10,7 +10,8 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route exact path={"/"} component={Home} />
-          <Route path={"/nexttrip"} component={NextTrip} />
+          <Route exact path={"/nexttrip/:route/:direction/:stop"} component={NextTrip} />
+          <Route exact path={"/nexttrip"} component={NextTrip} />
         </Switch>
       </BrowserRouter>
     </div>
