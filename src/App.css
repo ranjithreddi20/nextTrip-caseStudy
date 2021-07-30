@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+.home {
+  margin-top: 10px;
+}
+
+.findByRoute {
+  font-size: 42px;
+}
