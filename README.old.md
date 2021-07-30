@@ -1,1 +1,0 @@
-# nextTrip-caseStudy
